@@ -52,6 +52,14 @@ bool dequeue_isempty(T dequeue)
 }
 
 
+int dequeue_size(T dequeue)
+{
+    assert(dequeue);
+
+    return dequeue->count;
+}
+
+
 void dequeue_push_back(T dequeue, void *elem)
 {
     assert(dequeue);

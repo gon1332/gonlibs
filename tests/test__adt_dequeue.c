@@ -63,6 +63,7 @@ int test__ADT_dequeue(void)
     dequeue_push_back(d, new_node()); // id=2
 
     assert(dequeue_isempty(d) == false);
+    assert(dequeue_size(d) == 2);
 
     n = dequeue_pop_front(d); // id=1
     assert(n->id == 1 && !strcmp(n->name, "hello_1"));

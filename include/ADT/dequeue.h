@@ -8,6 +8,7 @@ typedef struct T *T;
 
 extern T     dequeue_new       (void);
 extern bool  dequeue_isempty   (T dequeue);
+extern int   dequeue_size      (T dequeue);
 extern void  dequeue_push_back (T dequeue, void *elem);
 extern void  dequeue_push_front(T dequeue, void *elem);
 extern void *dequeue_pop_back  (T dequeue);
