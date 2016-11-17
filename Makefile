@@ -6,6 +6,8 @@ CFLAGS=-Werror-implicit-function-declaration -Wall -Wextra \
 TEST_OBJS=test__mem_memwrap.o test__adt_stack.o test__adt_dequeue.o
 MEM_OBJS=memwrap.o
 ADT_OBJS=stack.o dequeue.o
+MEM_BUILD_OBJS=$(addprefix $(BUILD)/, $(MEM_OBJS))
+ADT_BUILD_OBJS=$(addprefix $(BUILD)/, $(ADT_OBJS))
 OBJ_FILES=$(ADT_OBJS) $(MEM_OBJS) $(TEST_OBJS) main.o
 EXEC=a.out
 
@@ -15,9 +17,10 @@ INCLUDE=./include
 LIB=$(SURFACE)/lib
 BUILD=./build
 DOCS=./docs
-OBJS = $(addprefix $(BUILD)/, $(OBJ_FILES))
+OBJS=$(addprefix $(BUILD)/, $(OBJ_FILES))
+STATIC_LIB=$(BUILD)/libgonlibs.a
 
-all: prep_build $(OBJS)
+all: prep_build $(OBJS) $(STATIC_LIB)
 	$(CC) $(CFLAGS) $(OBJS) -o $(EXEC)
 
 prep_build:
@@ -32,6 +35,9 @@ docs:
 	$(info ==========================)
 	mkdir -p $(DOCS)
 	doxygen Doxyfile
+
+$(STATIC_LIB):
+	ar -rcs $@ $(ADT_BUILD_OBJS) $(MEM_BUILD_OBJS)
 
 $(BUILD)/%.o:
 	$(CC) $(CFLAGS) -c -o $@ $<
