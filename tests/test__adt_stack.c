@@ -20,36 +20,54 @@ static void my_free(void *x)
     FREE(n->name);
 }
 
+
+static struct my_node *new_node()
+{
+    static uint8_t id = 0;
+
+    char *s = ALLOC(10);
+    if (!s) { perror("malloc"); exit(EXIT_FAILURE); }
+
+    snprintf(s, 10, "hello_%u", id);
+
+    struct my_node *n;
+    NEW(n);
+    if (!n) { perror("malloc"); exit(EXIT_FAILURE); }
+
+    n->id   = id++;
+    n->name = s;
+
+    return n;
+}
+
+
 int test__ADT_stack(void)
 {
     stack_t s = stack_new();
     assert(s != NULL);
 
-    bool e = stack_isempty(s);
-    assert(e == true);
+    assert(stack_isempty(s) == true);
 
-    char *s1 = ALLOC(10);
-    if (!s1) { perror("malloc"); exit(EXIT_FAILURE); }
+    stack_push(s, new_node());
+    assert(stack_isempty(s) == false);
 
-    strncpy(s1, "hello_1", 7);
+    struct my_node *n;
+    n = stack_pop(s);
+    assert(n != NULL && n->id == 0 && !strcmp(n->name, "hello_0"));
+    my_free(n);
 
-    struct my_node *n1;
-    NEW(n1);
-    if (!n1) { perror("malloc"); exit(EXIT_FAILURE); }
+    for (uint8_t i = 1; i <= 10; i++) {
+        stack_push(s, new_node());
+    }
 
-    n1->id   = 1;
-    n1->name = s1;
-    stack_push(s, n1);
-    e = stack_isempty(s);
-    assert(e == false);
-
-    n1 = stack_pop(s);
-    assert(n1 != NULL);
-    assert(n1->id == 1);
-    assert(n1->name != NULL);
-    assert(!strcmp(n1->name, "hello_1"));
+    for (uint8_t i = 10; i >= 1; i--) {
+        n = stack_pop(s);
+        assert(n != NULL && n->id == i);
+        my_free(n);
+    }
 
     stack_free(&s, my_free);
+    assert(s == NULL);
 
     return EXIT_SUCCESS;
 }
