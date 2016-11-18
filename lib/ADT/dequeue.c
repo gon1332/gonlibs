@@ -29,10 +29,6 @@ T dequeue_new(void)
     T dequeue;
 
     NEW(dequeue);
-    if (!dequeue) {
-        perror("malloc");
-        exit(EXIT_FAILURE);
-    }
 
     dequeue->count = 0;
     dequeue->front = NULL;
@@ -67,10 +63,6 @@ void dequeue_push_back(T dequeue, void *elem)
 
     struct elem *t;
     NEW(t);
-    if (!t) {
-        perror("malloc");
-        exit(EXIT_FAILURE);
-    }
 
     t->x = elem;
     t->next = NULL;
@@ -96,10 +88,7 @@ void dequeue_push_front(T dequeue, void *elem)
 
     struct elem *t;
     NEW(t);
-    if (!t) {
-        perror("malloc");
-        exit(EXIT_FAILURE);
-    }
+
     t->x = elem;
     t->next = NULL;
     t->prev = NULL;

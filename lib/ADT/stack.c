@@ -28,10 +28,6 @@ T stack_new(void)
     T stack;
 
     NEW(stack);
-    if (!stack) {
-        perror("malloc");
-        exit(EXIT_FAILURE);
-    }
 
     stack->count = 0;
     stack->head  = NULL;
@@ -57,10 +53,6 @@ void stack_push(T stack, void *elem)
 
     struct elem *t;
     NEW(t);
-    if (!t) {
-        perror("malloc");
-        exit(EXIT_FAILURE);
-    }
 
     t->x = elem;
     t->link = stack->head;
