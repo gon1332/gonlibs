@@ -14,6 +14,8 @@ int test__MEM_memwrap(void)
     int *s = ALLOC(10 * sizeof(int));
     assert(s != NULL);
 
+    RESIZE(s, 15 * sizeof(int));
+
     FREE(s);
     assert(s == NULL);
 
