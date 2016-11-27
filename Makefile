@@ -3,9 +3,11 @@ CFLAGS=-Werror-implicit-function-declaration -Wall -Wextra \
 		-pedantic -std=c99 \
 		-Iinclude/ -Itests
 
-TEST_OBJS=test__mem_memwrap.o test__adt_stack.o test__adt_dequeue.o
+TEST_OBJS=test__mem_memwrap.o test__adt_stack.o test__adt_dequeue.o \
+		  test__adt_hashtable.o
+
 MEM_OBJS=memwrap.o
-ADT_OBJS=stack.o dequeue.o
+ADT_OBJS=stack.o dequeue.o hashtable.o
 MEM_BUILD_OBJS=$(addprefix $(BUILD)/, $(MEM_OBJS))
 ADT_BUILD_OBJS=$(addprefix $(BUILD)/, $(ADT_OBJS))
 OBJ_FILES=$(ADT_OBJS) $(MEM_OBJS) $(TEST_OBJS) main.o
@@ -43,13 +45,15 @@ $(BUILD)/%.o:
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 
-$(BUILD)/test__mem_memwrap.o: $(TESTS)/test__mem_memwrap.c $(TESTS)/tests.h
-$(BUILD)/test__adt_stack.o:   $(TESTS)/test__adt_stack.c   $(TESTS)/tests.h
-$(BUILD)/test__adt_dequeue.o: $(TESTS)/test__adt_dequeue.c $(TESTS)/tests.h
+$(BUILD)/test__mem_memwrap.o:   $(TESTS)/test__mem_memwrap.c   $(TESTS)/tests.h
+$(BUILD)/test__adt_stack.o:     $(TESTS)/test__adt_stack.c     $(TESTS)/tests.h
+$(BUILD)/test__adt_dequeue.o:   $(TESTS)/test__adt_dequeue.c   $(TESTS)/tests.h
+$(BUILD)/test__adt_hashtable.o: $(TESTS)/test__adt_hashtable.c $(TESTS)/tests.h
 
-$(BUILD)/memwrap.o: $(LIB)/MEM/memwrap.c $(INCLUDE)/MEM/memwrap.h
-$(BUILD)/stack.o:   $(LIB)/ADT/stack.c   $(INCLUDE)/ADT/stack.h
-$(BUILD)/dequeue.o: $(LIB)/ADT/dequeue.c $(INCLUDE)/ADT/dequeue.h
+$(BUILD)/memwrap.o:   $(LIB)/MEM/memwrap.c   $(INCLUDE)/MEM/memwrap.h
+$(BUILD)/stack.o:     $(LIB)/ADT/stack.c     $(INCLUDE)/ADT/stack.h
+$(BUILD)/dequeue.o:   $(LIB)/ADT/dequeue.c   $(INCLUDE)/ADT/dequeue.h
+$(BUILD)/hashtable.o: $(LIB)/ADT/hashtable.c $(INCLUDE)/ADT/hashtable.h
 
 
 $(BUILD)/main.o: main.c

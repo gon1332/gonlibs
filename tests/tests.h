@@ -10,8 +10,9 @@
         case EXIT_FAILURE: puts("[FAIL]..." y); break; \
     } \
 
-extern int test__MEM_memwrap(void);
-extern int test__ADT_stack  (void);
-extern int test__ADT_dequeue(void);
+extern int test__MEM_memwrap  (void);
+extern int test__ADT_stack    (void);
+extern int test__ADT_dequeue  (void);
+extern int test__ADT_hashtable(void);
 
 #endif // TESTS_H
