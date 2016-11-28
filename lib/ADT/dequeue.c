@@ -48,7 +48,7 @@ bool dequeue_isempty(T dequeue)
 }
 
 
-int dequeue_size(T dequeue)
+uintmax_t dequeue_size(T dequeue)
 {
     assert(dequeue);
 

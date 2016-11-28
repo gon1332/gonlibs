@@ -55,20 +55,29 @@ int test__ADT_hashtable(void)
         assert(hashtable_size(m) == i);
     }
 
-    n = hashtable_find(m, 1);
-    assert(n != NULL);
-    assert(hashtable_isempty(m) == false);
-    assert(hashtable_size(m) == 10);
+    for (unsigned i = 1; i <= 10; i++) {
+        n = hashtable_find(m, i-1);
+        assert(n != NULL);
+        assert(hashtable_isempty(m) == false);
+        assert(hashtable_size(m) == 10);
+    }
 
-    n = hashtable_remove(m, 1);
+    n = hashtable_remove(m, 0);
     assert(n != NULL);
     assert(hashtable_isempty(m) == false);
     assert(hashtable_size(m) == 9);
 
-    n = hashtable_remove(m, 1);
+    n = hashtable_remove(m, 0);
     assert(n == NULL);
     assert(hashtable_isempty(m) == false);
     assert(hashtable_size(m) == 9);
+
+    for (unsigned i = 2; i <= 10; i++) {
+        n = hashtable_find(m, i-1);
+        assert(n != NULL);
+        assert(hashtable_isempty(m) == false);
+        assert(hashtable_size(m) == 9);
+    }
 
     n = hashtable_remove(m, 9);
     assert(n != NULL);

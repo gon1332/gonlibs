@@ -46,6 +46,15 @@ bool stack_isempty(T stack)
 }
 
 
+uintmax_t stack_size(T stack)
+{
+    assert(stack);
+    assert(stack->id == SECRET_ID);
+
+    return stack->count;
+}
+
+
 void stack_push(T stack, void *elem)
 {
     assert(stack);
@@ -85,7 +94,7 @@ void stack_free(T *stack, void (*elem_free)(void *))
     struct elem *u;
     for (struct elem *t = (*stack)->head; t; t = u) {
         u = t->link;
-        elem_free(t->x);
+        if (elem_free) elem_free(t->x);
         FREE(t);
     }
 
