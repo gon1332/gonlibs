@@ -1,5 +1,5 @@
 #include "MEM/memwrap.h"
-#include "ERR/reporterr.h"
+#include "DBG/reporterr.h"
 
 #include <stdlib.h>
 #include <assert.h>
