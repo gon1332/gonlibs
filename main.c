@@ -1,8 +1,8 @@
 #include "tests.h"
 #include "DBG/logger.h"
 
-#undef  LEVEL
-#define LEVEL 0
+#undef  LOG_LEVEL
+#define LOG_LEVEL 0
 
 int main(void)
 {
