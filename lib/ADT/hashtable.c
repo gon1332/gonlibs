@@ -1,6 +1,7 @@
 #include "ADT/hashtable.h"
 #include "MEM/memwrap.h"
 
+#include <pthread.h>
 #include <assert.h>
 
 #include <stdio.h>
@@ -25,6 +26,8 @@ struct T {
         struct elem *prev;
     } *table;
 
+    pthread_mutex_t lock;
+
     uint64_t id;
 };
 
@@ -38,6 +41,7 @@ T hashtable_new(void)
     hashtable->count = 0;
     hashtable->table = CALLOC(MAP_SIZE, sizeof(struct elem));
     hashtable->id    = SECRET_ID;
+    pthread_mutex_init(&hashtable->lock, NULL);
 
     return hashtable;
 }
@@ -74,6 +78,7 @@ void hashtable_insert(T hashtable, int key, void *elem)
     t->next = NULL;
     t->prev = NULL;
 
+    pthread_mutex_lock(&hashtable->lock);
     struct elem *bucket = &hashtable->table[HASH(key)];
 
     t->next = bucket->next;
@@ -84,6 +89,7 @@ void hashtable_insert(T hashtable, int key, void *elem)
     bucket->next = t;
 
     hashtable->count++;
+    pthread_mutex_unlock(&hashtable->lock);
 }
 
 
@@ -92,14 +98,16 @@ void *hashtable_remove(T hashtable, int key)
     assert(hashtable);
     assert(hashtable->id == SECRET_ID);
 
+    pthread_mutex_lock(&hashtable->lock);
     struct elem *bucket = &hashtable->table[HASH(key)];
 
+    void *removed = NULL;
     struct elem *curr;
     for (curr = bucket->next; curr; curr = curr->next) {
         if (curr->key != key)
             continue;
 
-        void *removed = curr->x;
+        removed = curr->x;
 
         if (curr->next) curr->next->prev = curr->prev;
         if (curr->prev) curr->prev->next = curr->next;
@@ -107,10 +115,11 @@ void *hashtable_remove(T hashtable, int key)
         FREE(curr);
 
         hashtable->count--;
-        return removed;
+        break;
     }
+    pthread_mutex_unlock(&hashtable->lock);
 
-    return NULL;
+    return removed;
 }
 
 
@@ -119,13 +128,16 @@ void *hashtable_find(T hashtable, int key)
     assert(hashtable);
     assert(hashtable->id == SECRET_ID);
 
+    pthread_mutex_lock(&hashtable->lock);
     struct elem bucket = hashtable->table[HASH(key)];
 
+    void *elem = NULL;
     for (struct elem *curr = bucket.next; curr; curr = curr->next) {
         if (curr->key == key)
-            return curr->x;
+            elem = curr->x;
     }
-    return NULL;
+    pthread_mutex_unlock(&hashtable->lock);
+    return elem;
 }
 
 
@@ -134,6 +146,7 @@ void hashtable_clear(T hashtable, void (*elem_free)(void *))
     assert(hashtable);
     assert(hashtable->id == SECRET_ID);
 
+    pthread_mutex_lock(&hashtable->lock);
     for (uint64_t b = 0; b < MAP_SIZE; b++) {
         struct elem *bucket = &hashtable->table[b];
         struct elem *next;
@@ -145,6 +158,7 @@ void hashtable_clear(T hashtable, void (*elem_free)(void *))
             curr = next;
         }
     }
+    pthread_mutex_unlock(&hashtable->lock);
 }
 
 
