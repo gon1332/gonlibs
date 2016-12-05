@@ -1,6 +1,6 @@
 CC=gcc
-CFLAGS=-Werror-implicit-function-declaration -Wall -Wextra \
-		-pedantic -std=c99 \
+CFLAGS=-Werror-implicit-function-declaration -Wall -Wextra -ggdb3 \
+		-pedantic -std=c99 -pthread \
 		-Iinclude/ -Itests
 
 TEST_OBJS=test__mem_memwrap.o test__adt_stack.o test__adt_dequeue.o \

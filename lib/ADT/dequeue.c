@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <pthread.h>
 #include <assert.h>
 
 #define SECRET_ID 0x0064657175657565
@@ -20,6 +21,8 @@ struct T {
         struct elem *prev;
     } *front, *rear;
 
+    pthread_mutex_t lock;
+
     uint64_t id;
 };
 
@@ -34,6 +37,7 @@ T dequeue_new(void)
     dequeue->front = NULL;
     dequeue->rear  = NULL;
     dequeue->id    = SECRET_ID;
+    pthread_mutex_init(&dequeue->lock, NULL);
 
     return dequeue;
 }
@@ -68,6 +72,7 @@ void dequeue_push_back(T dequeue, void *elem)
     t->next = NULL;
     t->prev = NULL;
 
+    pthread_mutex_lock(&dequeue->lock);
     if (dequeue_isempty(dequeue)) {
         dequeue->front = t;
         dequeue->rear  = t;
@@ -78,6 +83,7 @@ void dequeue_push_back(T dequeue, void *elem)
     }
 
     dequeue->count++;
+    pthread_mutex_unlock(&dequeue->lock);
 }
 
 
@@ -93,6 +99,7 @@ void dequeue_push_front(T dequeue, void *elem)
     t->next = NULL;
     t->prev = NULL;
 
+    pthread_mutex_lock(&dequeue->lock);
     if (dequeue_isempty(dequeue)) {
         dequeue->front = t;
         dequeue->rear  = t;
@@ -103,6 +110,7 @@ void dequeue_push_front(T dequeue, void *elem)
     }
 
     dequeue->count++;
+    pthread_mutex_unlock(&dequeue->lock);
 }
 
 
@@ -110,8 +118,9 @@ void *dequeue_pop_back(T dequeue)
 {
     assert(dequeue);
     assert(dequeue->id == SECRET_ID);
-    assert(dequeue->count);
+    assert(dequeue->count > 0);
 
+    pthread_mutex_lock(&dequeue->lock);
     struct elem *t = dequeue->rear;
     void *x = t->x;
 
@@ -124,6 +133,7 @@ void *dequeue_pop_back(T dequeue)
         dequeue->rear = t->next;
         dequeue->count--;
     }
+    pthread_mutex_unlock(&dequeue->lock);
 
     FREE(t);
 
@@ -135,8 +145,9 @@ void *dequeue_pop_front(T dequeue)
 {
     assert(dequeue);
     assert(dequeue->id == SECRET_ID);
-    assert(dequeue->count);
+    assert(dequeue->count > 0);
 
+    pthread_mutex_lock(&dequeue->lock);
     struct elem *t = dequeue->front;
     void *x = t->x;
 
@@ -149,6 +160,7 @@ void *dequeue_pop_front(T dequeue)
         dequeue->front = t->prev;
         dequeue->count--;
     }
+    pthread_mutex_unlock(&dequeue->lock);
 
     FREE(t);
 
