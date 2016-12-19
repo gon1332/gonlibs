@@ -168,6 +168,53 @@ void *dequeue_pop_front(T dequeue)
 }
 
 
+// Searches based on pointer equality
+// It is a project specific function
+void *dequeue_remove(T dequeue, void *elem)
+{
+    assert(dequeue);
+    assert(dequeue->id == SECRET_ID);
+    assert(dequeue->count > 0);
+
+    pthread_mutex_lock(&dequeue->lock);
+    struct elem *curr;
+    for (curr = dequeue->rear; curr; curr = curr->next) {
+        if (curr->x == elem) {
+            break;
+        }
+    }
+
+    void *x = NULL;
+    if (curr) {
+        x = curr->x;
+        if (dequeue->count == 1) {
+            dequeue->front = NULL;
+            dequeue->rear  = NULL;
+            dequeue->count = 0;
+        } else if (dequeue->count > 1) {
+            if (curr == dequeue->front) {
+                curr->prev->next = NULL;
+                dequeue->front = curr->prev;
+            } else if (curr == dequeue->rear) {
+                curr->next->prev = NULL;
+                dequeue->rear = curr->next;
+            } else {
+                curr->next->prev = curr->prev;
+                curr->prev->next = curr->next;
+            }
+
+            dequeue->count--;
+        }
+    }
+
+    pthread_mutex_unlock(&dequeue->lock);
+
+    FREE(curr);
+
+    return x;
+}
+
+
 void dequeue_clear(T dequeue, void (*elem_free)(void *))
 {
     assert(dequeue);

@@ -13,6 +13,12 @@ struct my_node {
     char     *name;
 };
 
+static void my_print(void *x)
+{
+    struct my_node *n = x;
+    printf("%u: %s\n", n->id, n->name);
+}
+
 static void my_free(void *x)
 {
     struct my_node *n = x;
@@ -61,6 +67,8 @@ int test__ADT_hashtable(void)
         assert(hashtable_isempty(m) == false);
         assert(hashtable_size(m) == 10);
     }
+
+    hashtable_exec(m, my_print);
 
     n = hashtable_remove(m, 0);
     assert(n != NULL);

@@ -123,6 +123,53 @@ void *hashtable_remove(T hashtable, int key)
 }
 
 
+void *hashtable_next(T hashtable)
+{
+    assert(hashtable);
+    assert(hashtable->id == SECRET_ID);
+
+    pthread_mutex_lock(&hashtable->lock);
+    void *removed = NULL;
+
+    for (uint64_t b = 0; b < MAP_SIZE; b++) {
+        struct elem *bucket = &hashtable->table[b];
+        struct elem *curr = bucket->next;
+        if (curr) {
+            removed = curr->x;
+
+            if (curr->next) curr->next->prev = curr->prev;
+            if (curr->prev) curr->prev->next = curr->next;
+            else bucket->next = curr->next;
+            FREE(curr);
+
+            hashtable->count--;
+
+            break;
+        }
+    }
+    pthread_mutex_unlock(&hashtable->lock);
+
+    return removed;
+}
+
+
+void hashtable_exec(T hashtable, void (*func)(void *))
+{
+    assert(hashtable);
+    assert(hashtable->id == SECRET_ID);
+    assert(func);
+
+    pthread_mutex_lock(&hashtable->lock);
+    for (uint64_t b = 0; b < MAP_SIZE; b++) {
+        struct elem *bucket = &hashtable->table[b];
+        for (struct elem *curr = bucket->next; curr; curr = curr->next) {
+            func(curr->x);
+        }
+    }
+    pthread_mutex_unlock(&hashtable->lock);
+}
+
+
 void *hashtable_find(T hashtable, int key)
 {
     assert(hashtable);

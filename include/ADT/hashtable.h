@@ -11,8 +11,10 @@ extern T          hashtable_new    (void);
 extern bool       hashtable_isempty(T hashtable);
 extern uintmax_t  hashtable_size   (T hashtable);
 extern void      *hashtable_find   (T hashtable, int key);
+extern void       hashtable_exec   (T hashtable, void (*func)(void *));
 extern void       hashtable_insert (T hashtable, int key, void *elem);
 extern void      *hashtable_remove (T hashtable, int key);
+extern void      *hashtable_next   (T hashtable);
 extern void       hashtable_clear  (T hashtable, void (*elem_free)(void *));
 extern void       hashtable_free   (T *hashtable, void (*elem_free)(void *));
 
