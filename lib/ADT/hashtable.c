@@ -41,6 +41,7 @@ T hashtable_new(void)
     hashtable->count = 0;
     hashtable->table = CALLOC(MAP_SIZE, sizeof(struct elem));
     hashtable->id    = SECRET_ID;
+
     pthread_mutex_init(&hashtable->lock, NULL);
 
     return hashtable;
@@ -214,7 +215,8 @@ void hashtable_free(T *hashtable, void (*elem_free)(void *))
     assert(hashtable && *hashtable);
     assert((*hashtable)->id == SECRET_ID);
 
-    hashtable_clear(*hashtable, elem_free);
+    if (!hashtable_isempty(*hashtable))
+        hashtable_clear(*hashtable, elem_free);
 
     FREE((*hashtable)->table);
     FREE(*hashtable);

@@ -234,6 +234,7 @@ void dequeue_free(T *dequeue, void (*elem_free)(void *))
     assert(dequeue && *dequeue);
     assert((*dequeue)->id == SECRET_ID);
 
-    dequeue_clear(*dequeue, elem_free);
+    if (!dequeue_isempty(*dequeue))
+        dequeue_clear(*dequeue, elem_free);
     FREE(*dequeue);
 }
