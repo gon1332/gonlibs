@@ -5,6 +5,7 @@ Libraries of generic stuff written in C for my projects and yours. ;)
   * ADT
     * stack
     * dequeue
+    * hashtable
   * MEM
     * memwrapper
 
@@ -32,6 +33,20 @@ void      *dequeue_pop_back  (dequeue_t dequeue);
 void      *dequeue_pop_front (dequeue_t dequeue);
 void       dequeue_clear     (dequeue_t dequeue, void (*elem_free)(void *));
 void       dequeue_free      (dequeue_t *dequeue, void (*elem_free)(void *));
+```
+
+#### hashtable
+A generic hashtable. Stores pairs of type <int, T>.
+
+```c
+hashtable_t  hashtable_new    (void);
+bool         hashtable_isempty(hashtable_t hashtable);
+uintmax_t    hashtable_size   (hashtable_t hashtable);
+void        *hashtable_find   (hashtable_t hashtable, int key);
+void         hashtable_insert (hashtable_t hashtable, int key, void *elem);
+void        *hashtable_remove (hashtable_t hashtable, int key);
+void         hashtable_clear  (hashtable_t hashtable, void (*elem_free)(void *));
+void         hashtable_free   (hashtable_t *hashtable, void (*elem_free)(void *));
 ```
 
 ### MEM
