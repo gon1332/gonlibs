@@ -12,7 +12,7 @@
 #define T stack_t
 
 struct T {
-    int count;
+    int size;
 
     struct elem {
         void *x;
@@ -29,7 +29,7 @@ T stack_new(void)
 
     NEW(stack);
 
-    stack->count = 0;
+    stack->size = 0;
     stack->head  = NULL;
     stack->id    = SECRET_ID;
 
@@ -37,12 +37,12 @@ T stack_new(void)
 }
 
 
-bool stack_isempty(T stack)
+bool stack_empty(T stack)
 {
     assert(stack);
     assert(stack->id == SECRET_ID);
 
-    return !stack->count;
+    return !stack->size;
 }
 
 
@@ -51,7 +51,7 @@ uintmax_t stack_size(T stack)
     assert(stack);
     assert(stack->id == SECRET_ID);
 
-    return stack->count;
+    return stack->size;
 }
 
 
@@ -66,7 +66,7 @@ void stack_push(T stack, void *elem)
     t->x = elem;
     t->link = stack->head;
     stack->head = t;
-    stack->count++;
+    stack->size++;
 }
 
 
@@ -74,11 +74,11 @@ void *stack_pop(T stack)
 {
     assert(stack);
     assert(stack->id == SECRET_ID);
-    assert(stack->count);
+    assert(stack->size);
 
     struct elem *t = stack->head;
     stack->head = t->link;
-    stack->count--;
+    stack->size--;
     void *x = t->x;
     FREE(t);
 

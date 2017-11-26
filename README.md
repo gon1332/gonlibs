@@ -15,11 +15,11 @@ Libraries of generic stuff written in C for my projects and yours. ;)
 A generic LIFO queue. A stack.
 
 ```c
-stack_t  stack_new    (void);
-bool     stack_isempty(stack_t stack);
-void     stack_push   (stack_t stack, void *elem);
-void    *stack_pop    (stack_t stack);
-void     stack_free   (stack_t *stack, void (*elem_free)(void *));
+stack_t  stack_new  (void);
+bool     stack_empty(stack_t stack);
+void     stack_push (stack_t stack, void *elem);
+void    *stack_pop  (stack_t stack);
+void     stack_free (stack_t *stack, void (*elem_free)(void *));
 ```
 
 #### dequeue

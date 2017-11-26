@@ -7,7 +7,6 @@
 #define T forwardlist_t
 typedef struct T *T;
 
-
 extern T    forwardlist_new (void *elem, ...);
 extern void forwardlist_free(T *list);
 

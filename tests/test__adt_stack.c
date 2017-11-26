@@ -46,11 +46,11 @@ int test__ADT_stack(void)
     stack_t s = stack_new();
     assert(s != NULL);
 
-    assert(stack_isempty(s) == true);
+    assert(stack_empty(s) == true);
     assert(stack_size(s) == 0);
 
     stack_push(s, new_node());
-    assert(stack_isempty(s) == false);
+    assert(stack_empty(s) == false);
     assert(stack_size(s) == 1);
 
     struct my_node *n;
