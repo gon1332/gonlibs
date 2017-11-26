@@ -116,12 +116,18 @@ int test__ADT_forwardlist(void)
     forwardlist_free(&list);
     assert(list == NULL);
 
-    // Check append
+    // Test append
     forwardlist_t p1, p2;
     p1 = forwardlist_new("One", "Two", "Three", NULL);
     p2 = forwardlist_new("Four", "Five", NULL);
     forwardlist_append(p1, p2);
     // forwardlist_map(p1, apply_print, stderr);
+
+    // Test to_array
+    char **array = (char **)forwardlist_to_array(p1, NULL);
+    // for (int i = 0; array[i]; i++) {
+    //     printf("%s\n", array[i]);
+    // }
 
     return EXIT_SUCCESS;
 }

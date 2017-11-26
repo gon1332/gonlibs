@@ -80,7 +80,13 @@ void  forwardlist_map       (T list,
 void  forwardlist_clear     (T list);
 
 // Operations
-void forwardlist_reverse(T list);
+void   forwardlist_reverse (T list);
+void **forwardlist_to_array(T list, void *end);
+
+// To be added
+void   forwardlist_insert_after(T list, const uintmax_t pos, void *elem);
+void   forwardlist_erase_after (T list, const void *pos);
+T      forwardlist_copy        (T list);
 ```
 
 ### MEM

@@ -183,8 +183,6 @@ void forwardlist_reverse(T list)
 }
 
 
-
-
 // T forward_list_copy(T list)
 // {
 //     T  head,
@@ -201,3 +199,19 @@ void forwardlist_reverse(T list)
 // }
 
 
+void **forwardlist_to_array(T list, void *end)
+{
+    uintmax_t n = forwardlist_size(list);
+
+    void **array = ALLOC((n + 1) * sizeof(*array));
+
+    uintmax_t i;
+    struct elem *node = list->front;
+    for (i = 0; i < n; i++) {
+        array[i] = node->first;
+        node = node->rest;
+    }
+    array[i] = end;
+
+    return array;
+}
