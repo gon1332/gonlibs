@@ -75,6 +75,7 @@ bool forwardlist_empty(T list)
 uintmax_t forwardlist_size(T list)
 {
     assert(list);
+    assert(list->id == SECRET_ID);
 
     return list->size;
 }
@@ -130,6 +131,9 @@ void *forwardlist_pop_front(T list)
 
 void forwardlist_append(T list, T tail)
 {
+    assert(list);
+    assert(list->id == SECRET_ID);
+
     list->rear->rest = tail->front;
     list->rear = tail->rear;
     list->size += tail->size;
@@ -158,6 +162,7 @@ void forwardlist_clear(T list)
 void forwardlist_map(T list, void apply(void **x, void *cl), void *cl)
 {
     assert(list);
+    assert(list->id == SECRET_ID);
     assert(apply);
 
     for (struct elem *node = list->front; node; node = node->rest)
@@ -167,6 +172,9 @@ void forwardlist_map(T list, void apply(void **x, void *cl), void *cl)
 
 void forwardlist_reverse(T list)
 {
+    assert(list);
+    assert(list->id == SECRET_ID);
+
     struct elem *head = NULL,
                 *next;
 
@@ -201,6 +209,9 @@ void forwardlist_reverse(T list)
 
 void **forwardlist_to_array(T list, void *end)
 {
+    assert(list);
+    assert(list->id == SECRET_ID);
+
     uintmax_t n = forwardlist_size(list);
 
     void **array = ALLOC((n + 1) * sizeof(*array));
@@ -212,6 +223,6 @@ void **forwardlist_to_array(T list, void *end)
         node = node->rest;
     }
     array[i] = end;
-
     return array;
 }
+
