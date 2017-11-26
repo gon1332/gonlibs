@@ -6,6 +6,7 @@ Libraries of generic stuff written in C for my projects and yours. ;)
     * stack
     * dequeue
     * hashtable
+    * forwardlist
   * MEM
     * memwrapper
 
@@ -25,28 +26,61 @@ void     stack_free   (stack_t *stack, void (*elem_free)(void *));
 A generic double-ended queue.
 
 ```c
-dequeue_t  dequeue_new       (void);
-bool       dequeue_isempty   (dequeue_t dequeue);
-void       dequeue_push_back (dequeue_t dequeue, void *elem);
-void       dequeue_push_front(dequeue_t dequeue, void *elem);
-void      *dequeue_pop_back  (dequeue_t dequeue);
-void      *dequeue_pop_front (dequeue_t dequeue);
-void       dequeue_clear     (dequeue_t dequeue, void (*elem_free)(void *));
-void       dequeue_free      (dequeue_t *dequeue, void (*elem_free)(void *));
+dequeue_t dequeue_new (void);
+void      dequeue_free(dequeue_t *dequeue, void (*elem_free)(void *));
+
+// Capacity
+bool dequeue_isempty(dequeue_t dequeue);
+
+// Modifiers
+void  dequeue_push_back (dequeue_t dequeue, void *elem);
+void  dequeue_push_front(dequeue_t dequeue, void *elem);
+void *dequeue_pop_back  (dequeue_t dequeue);
+void *dequeue_pop_front (dequeue_t dequeue);
+void  dequeue_clear     (dequeue_t dequeue, void (*elem_free)(void *));
 ```
 
 #### hashtable
 A generic hashtable. Stores pairs of type <int, T>.
 
 ```c
-hashtable_t  hashtable_new    (void);
-bool         hashtable_isempty(hashtable_t hashtable);
-uintmax_t    hashtable_size   (hashtable_t hashtable);
-void        *hashtable_find   (hashtable_t hashtable, int key);
-void         hashtable_insert (hashtable_t hashtable, int key, void *elem);
-void        *hashtable_remove (hashtable_t hashtable, int key);
-void         hashtable_clear  (hashtable_t hashtable, void (*elem_free)(void *));
-void         hashtable_free   (hashtable_t *hashtable, void (*elem_free)(void *));
+hashtable_t hashtable_new (void);
+void        hashtable_free(hashtable_t *hashtable, void (*elem_free)(void *));
+
+// Capacity
+bool      hashtable_isempty(hashtable_t hashtable);
+uintmax_t hashtable_size   (hashtable_t hashtable);
+
+// Modifiers
+void  hashtable_insert(hashtable_t hashtable, int key, void *elem);
+void *hashtable_remove(hashtable_t hashtable, int key);
+void  hashtable_clear (hashtable_t hashtable, void (*elem_free)(void *));
+
+// Operations
+void *hashtable_find(hashtable_t hashtable, int key);
+```
+
+#### forwardlist
+A generic single-linked list with simplicity built in to it.
+
+```c
+T    forwardlist_new (void *elem, ...);
+void forwardlist_free(T *list);
+
+// Capacity
+bool      forwardlist_empty(T list);
+uintmax_t forwardlist_size (T list);
+
+// Modifiers
+void  forwardlist_push_front(T list, void *elem);
+void *forwardlist_pop_front (T list);
+void  forwardlist_append    (T list, T tail);
+void  forwardlist_map       (T list,
+        void apply(void **x, void *cl), void *cl);
+void  forwardlist_clear     (T list);
+
+// Operations
+void forwardlist_reverse(T list);
 ```
 
 ### MEM
