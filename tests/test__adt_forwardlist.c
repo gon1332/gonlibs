@@ -129,6 +129,18 @@ int test__ADT_forwardlist(void)
     //     printf("%s\n", array[i]);
     // }
 
+    // Test iterators
+    for (forwardlist_iterator_t it = forwardlist_begin(p1); it != forwardlist_end(p1); it = forwardlist_next(p1, it)) {
+
+        char **number = (char **)forwardlist_deref(it);
+        *number = "Hi";
+    }
+    for (forwardlist_iterator_t it = forwardlist_begin(p1); it != forwardlist_end(p1); it = forwardlist_next(p1, it)) {
+        char *number = *(char **)forwardlist_deref(it);
+        assert(!strcmp(number, "Hi"));
+        // printf("%s\n", number);
+    }
+
     return EXIT_SUCCESS;
 }
 

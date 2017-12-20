@@ -22,6 +22,12 @@ struct T {
 };
 
 
+/*!
+ * **Complexity** <br />
+ * Constant for the _default constructor (1)_.
+ * Linear in the number of elements for the _fill constructor (2)_.
+ *
+ */
 T forwardlist_new(void *elem, ...)
 {
     T list;
@@ -53,6 +59,11 @@ T forwardlist_new(void *elem, ...)
 }
 
 
+/*!
+ * **Complexity** <br />
+ * Linear in the number of elements.
+ *
+ */
 void forwardlist_free(T *list)
 {
     assert(list && *list);
@@ -63,6 +74,38 @@ void forwardlist_free(T *list)
 }
 
 
+// Iterators
+//
+//
+forwardlist_iterator_t forwardlist_begin(T list)
+{
+    return list->front;
+}
+
+
+forwardlist_iterator_t forwardlist_end(T list)
+{
+    return NULL;
+}
+
+
+forwardlist_iterator_t forwardlist_next(T list, forwardlist_iterator_t it)
+{
+    return ((struct elem *)it)->rest;
+}
+
+
+void **forwardlist_deref(forwardlist_iterator_t it)
+{
+    return &((struct elem *)it)->first;
+}
+
+
+/*!
+ * **Complexity** <br />
+ * Constant.
+ *
+ */
 bool forwardlist_empty(T list)
 {
     assert(list);
@@ -72,6 +115,11 @@ bool forwardlist_empty(T list)
 }
 
 
+/*!
+ * **Complexity** <br />
+ * Constant.
+ *
+ */
 uintmax_t forwardlist_size(T list)
 {
     assert(list);
@@ -81,6 +129,11 @@ uintmax_t forwardlist_size(T list)
 }
 
 
+/*!
+ * **Complexity** <br />
+ * Constant.
+ *
+ */
 void forwardlist_push_front(T list, void *elem)
 {
     assert(list);
@@ -103,6 +156,11 @@ void forwardlist_push_front(T list, void *elem)
 }
 
 
+/*!
+ * **Complexity** <br />
+ * Constant.
+ *
+ */
 void *forwardlist_pop_front(T list)
 {
     assert(list);
@@ -142,6 +200,11 @@ void forwardlist_append(T list, T tail)
 }
 
 
+/*!
+ * **Complexity** <br />
+ * Linear in size.
+ *
+ */
 void forwardlist_clear(T list)
 {
     assert(list);
@@ -170,6 +233,11 @@ void forwardlist_map(T list, void apply(void **x, void *cl), void *cl)
 }
 
 
+/*!
+ * **Complexity** <br />
+ * Linear in size.
+ *
+ */
 void forwardlist_reverse(T list)
 {
     assert(list);
