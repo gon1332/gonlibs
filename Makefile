@@ -36,7 +36,7 @@ docs:
 	$(info === Building Documentation)
 	$(info ==========================)
 	mkdir -p $(DOCS)
-	doxygen Doxyfile
+	doxygen docs_conf
 
 $(STATIC_LIB):
 	ar -rcs $@ $(ADT_BUILD_OBJS) $(MEM_BUILD_OBJS)

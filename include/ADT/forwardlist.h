@@ -155,6 +155,18 @@ extern void forwardlist_append(T list, T tail);
 // extern void  forwardlist_erase_after (T list, const uintmax_t pos);
 
 
+/*! \brief **Apply function to content**
+ *
+ * \details Calls the function pointed to by `apply` for every node in forwardlist.
+ *          Clients can pass an application-specific pointer, `cl`, to forwardlist_map(),
+ *          and this pointer is passed along to *apply as its second argument.
+ *
+ * \param list
+ * \param apply Pointer to the function to by applied on each content of the forwardlist.
+ * \param cl    Application-specific pointer.
+ * \return none
+ *
+ */
 extern void forwardlist_map(T list,
         void apply(void **x, void *cl), void *cl);
 
@@ -163,9 +175,9 @@ extern void forwardlist_map(T list,
  *
  * \details Removes all elements from the forwardlist (which are destroyed),
  *          and leaves the forwardlist with a size of 0.
- * \return none
  *
  * \param list
+ * \return none
  *
  */
 extern void forwardlist_clear(T list);
@@ -189,6 +201,20 @@ extern void forwardlist_reverse(T list);
 
 
 // extern T      forwardlist_copy    (T list);
+
+
+/*! \brief **Return forwardlist as an array**
+ *
+ * \details Given a list with N values, forwardlist_to_array() creates an array
+ *          in which elements zero through N-1 hold the N values from the first
+ *          fields of the list and the Nth element holds the value of end, which
+ *          is often the null pointer.
+ *
+ * \param list
+ * \param end Holds the value of the end of the forwardlist.
+ * \return The pointer to the first element of the array.
+ *
+ */
 extern void **forwardlist_to_array(T list, void *end);
 
 #undef T
