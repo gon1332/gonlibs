@@ -101,6 +101,9 @@ void **forwardlist_deref(forwardlist_iterator_t it)
 }
 
 
+// Capacity
+//
+//
 /*!
  * **Complexity** <br />
  * Constant.
@@ -129,6 +132,9 @@ uintmax_t forwardlist_size(T list)
 }
 
 
+// Modifiers
+//
+//
 /*!
  * **Complexity** <br />
  * Constant.
@@ -233,6 +239,9 @@ void forwardlist_map(T list, void apply(void **x, void *cl), void *cl)
 }
 
 
+// Operations
+//
+//
 /*!
  * **Complexity** <br />
  * Linear in size.

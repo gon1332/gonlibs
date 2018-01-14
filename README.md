@@ -71,6 +71,12 @@ void forwardlist_free(T *list);
 bool      forwardlist_empty(T list);
 uintmax_t forwardlist_size (T list);
 
+// Iterators
+forwardlist_iterator_t   forwardlist_begin(T list);
+forwardlist_iterator_t   forwardlist_end(T list);
+forwardlist_iterator_t   forwardlist_next(T list, forwardlist_iterator_t it);
+void                   **forwardlist_deref(forwardlist_iterator_t it);
+
 // Modifiers
 void  forwardlist_push_front(T list, void *elem);
 void *forwardlist_pop_front (T list);
