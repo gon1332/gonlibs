@@ -73,8 +73,8 @@ uintmax_t forwardlist_size (T list);
 
 // Iterators
 forwardlist_iterator_t   forwardlist_begin(T list);
-forwardlist_iterator_t   forwardlist_end(T list);
-forwardlist_iterator_t   forwardlist_next(T list, forwardlist_iterator_t it);
+forwardlist_iterator_t   forwardlist_end  (T list);
+forwardlist_iterator_t   forwardlist_next (T list, forwardlist_iterator_t it);
 void                   **forwardlist_deref(forwardlist_iterator_t it);
 
 // Modifiers
